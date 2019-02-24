@@ -309,6 +309,7 @@ class BaseballUpdaterBot:
                 globalLinescoreStatus = ("0", "0", False, False, False, "0", "0", "0", "0", "0", "0")
                 print("[{}] New Day".format(self.getTime()))
 
+            # You'll now want to load https://statsapi.mlb.com/api/v1/schedule/?sportId=1&teamId=136&date=02/24/2019
             url = "http://gdx.mlb.com/components/game/mlb/"
             url = url + "year_" + todaysGame.strftime("%Y") + "/month_" + todaysGame.strftime \
                 ("%m") + "/day_" + todaysGame.strftime("%d")
