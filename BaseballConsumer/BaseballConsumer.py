@@ -310,9 +310,8 @@ class BaseballUpdaterBot:
                 print("[{}] New Day".format(self.getTime()))
 
             # You'll now want to load https://statsapi.mlb.com/api/v1/schedule/?sportId=1&teamId=136&date=02/24/2019
-            url = "http://gdx.mlb.com/components/game/mlb/"
-            url = url + "year_" + todaysGame.strftime("%Y") + "/month_" + todaysGame.strftime \
-                ("%m") + "/day_" + todaysGame.strftime("%d")
+            url = "https://statsapi.mlb.com/api/v1/schedule/?sportId=1&teamId=136&date"
+            url = url + todaysGame.strftime("%m/%d/%Y")
 
             while not response:
                 # If need this here so bot doesn't get stuck on off days
