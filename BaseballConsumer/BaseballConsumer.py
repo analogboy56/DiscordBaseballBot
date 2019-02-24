@@ -1,16 +1,10 @@
-
 '''
-
 BASEBALL GAME THREAD BOT
-
 Originally written by:
 /u/DetectiveWoofles
 /u/avery_crudeman
-
 Editted for Discord by KimbaWLion
-
 Please contact us on Reddit or Github if you have any questions.
-
 '''
 
 from datetime import datetime, timedelta
@@ -24,28 +18,28 @@ import discord
 import random
 import bs4
 
-GAME_THREAD_LOG = r'<Path to game_thread.now>'
+GAME_THREAD_LOG = r'D:\Users\LaMaster\Downloads\DiscordBaseballBot-master\DiscordBaseballBot-master\BaseballConsumer\logs\game_thread.now'
 SETTINGS_FILE = '../settings.json'
 
 # Emotes
-EMOTE_STRIKEOUT = "<:strikeout:345303176704032770>"
-EMOTE_STRIKEOUT_LOOKING = "<:strikeout2:345303176792113152>"
-EMOTE_RBI = "<:ribbies:345468637617848321>"
-EMOTE_HOMERUN = "<:ITSOUTTAHERE:345303176955822080>"
-EMOTE_GRAND_SLAM = "<:salami:345303176636792832>"
+EMOTE_STRIKEOUT = "<:strikeout:434149393982029824>"
+EMOTE_STRIKEOUT_LOOKING = "<:strikeout2:434149415175979018>"
+EMOTE_RBI = "<:ribbies:453971650300477440>"
+EMOTE_HOMERUN = "<:ITSOUTTAHERE:453955727409807362>"
+EMOTE_GRAND_SLAM = "<:salami:453953837158367233>"
 EMOTE_OTHER_TEAM_RBI = ":("
 EMOTE_OTHER_TEAM_STRIKEOUT = "K"
 EMOTE_OTHER_TEAM_STRIKEOUT_LOOKING = "ꓘ"
 EMOTE_STOLEN_BASE = "<:stolen:432072292013572097>"
 
 # Game Status Constants
-WARMUP_TITLE = 'Game\'s about to start, everyone get in here!'
-WARMUP_DESCRIPTION = "Welcome to Spring training!" # Meet the Mets, meet the Mets.  Step right up and greet the Mets...
-WARMUP_BODY_ALTERNATIVE = "https://www.youtube.com/watch?v=6GsCmnZnllk" # MTM https://www.youtube.com/watch?v=6GsCmnZnllk
+WARMUP_TITLE = 'Game\'s about to start, everyone get in @here!'
+WARMUP_DESCRIPTION = "Welcome to Mariners Baseball!" # Sodo Mojo
+WARMUP_BODY_ALTERNATIVE = "https://www.youtube.com/watch?v=B6XbLXXMPYo" # Mariners Theme
 
 GAMESTARTED_TITLE = 'Play ball!'
-GAMESTARTED_DESCRIPTION = 'Cespedes and monster dongs, name a better mashup.'
-GAMESTARTED_BODY = "Let's go Mets!"
+GAMESTARTED_DESCRIPTION = 'Nelly and monster dongs, name a better mashup.'
+GAMESTARTED_BODY = "Let's go Mariners!"
 
 RAINDELAY_TITLE = 'Rain Delay'
 RAINDELAY_DESCRIPTION = 'Rain delay stats?'
@@ -59,10 +53,10 @@ COMPLETEDEARLY_TITLE = 'Game Completed Early'
 COMPLETEDEARLY_DESCRIPTION = 'Magic 8 ball, will this game resume sometime tonight?'
 COMPLETEDEARLY_BODY = '8-ball: "No chance in hell!"'
 
-GAMEENDED_WIN_TITLE = 'Put it in the books!'
-GAMEENDED_WIN_BODY = 'https://www.youtube.com/watch?v=mmwic9kFx2c' ## (TCB) 'https://www.youtube.com/watch?v=mmwic9kFx2c'
-GAMEENDED_LOSS_TITLE = 'Mets defeated'
-GAMEENDED_LOSS_BODY = 'We will get \'em next time' # new york new york  ## (dolphin) ''https://puu.sh/wd9ZQ/c70f4179f5.jpg')
+GAMEENDED_WIN_TITLE = 'I BLESS THE RAINS!'
+GAMEENDED_WIN_BODY = 'https://www.youtube.com/watch?v=FTQbiNvZqaY' ## (TCB) 'https://www.youtube.com/watch?v=mmwic9kFx2c'
+GAMEENDED_LOSS_TITLE = 'M\'s defeated'
+GAMEENDED_LOSS_BODY = 'We will get \'em next time' # suuuure
 
 class BaseballUpdaterBot:
 
@@ -111,14 +105,14 @@ class BaseballUpdaterBot:
             atbat['outs'] ,atbat['result'], atbat['description'])
 
     def hasPlayerQuip(self, gameEvent):
-        if "Chase Utley" in gameEvent['description']: return True
+        if "Mike Trout" in gameEvent['description']: return True
         return False
 
     def formatPlayerQuips(self, description):
-        if "Chase Utley" in description:
+        if "Mike Trout" in description:
             playerQuips = [
-                "Fuck Chase Utley",
-                "uck-Fay ase_Utley-Chay"
+                "Fuck Mike Trout",
+                "uck-Fay ike_Trout-May"
             ]
             return random.choice(playerQuips)
         return ""
@@ -315,7 +309,7 @@ class BaseballUpdaterBot:
                 globalLinescoreStatus = ("0", "0", False, False, False, "0", "0", "0", "0", "0", "0")
                 print("[{}] New Day".format(self.getTime()))
 
-            url = "http://gd2.mlb.com/components/game/mlb/"
+            url = "http://gdx.mlb.com/components/game/mlb/"
             url = url + "year_" + todaysGame.strftime("%Y") + "/month_" + todaysGame.strftime \
                 ("%m") + "/day_" + todaysGame.strftime("%d")
 

@@ -62,9 +62,10 @@ class GameEventsParser:
         return inning.get('num')
 
     def getHalfInningAtBats(self, inning, topOrBottom):
+        print(inning.get('bottom'))
         atbats = []
         if type(inning) is str: return atbats
-        atbats = inning.get(topOrBottom).get('atbat')
+        atbats = inning.get(topOrBottom).get('atBat')
         if atbats is None: atbats = [] # If no at bats, return empty list to make sure the loop doesn't fail
         return atbats
 
