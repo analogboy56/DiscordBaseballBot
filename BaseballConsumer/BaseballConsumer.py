@@ -312,7 +312,7 @@ class BaseballUpdaterBot:
 
             # You'll now want to load https://statsapi.mlb.com/api/v1/schedule/?sportId=1&teamId=136&date=02/24/2019
             # Changes made to load new API
-            url = "https://statsapi.mlb.com/api/v1/schedule/?sportId=1&teamId=136&date"
+            url = "https://statsapi.mlb.com/api/v1/schedule/?sportId=1&teamId=136&date="
             url = url + todaysGame.strftime("%m/%d/%Y")
 
             while not response:
