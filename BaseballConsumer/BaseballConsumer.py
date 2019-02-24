@@ -3,7 +3,8 @@ BASEBALL GAME THREAD BOT
 Originally written by:
 /u/DetectiveWoofles
 /u/avery_crudeman
-Editted for Discord by KimbaWLion
+Edited for Discord by KimbaWLion
+Updated 2019 by analogboy56 and fustrate
 Please contact us on Reddit or Github if you have any questions.
 '''
 
