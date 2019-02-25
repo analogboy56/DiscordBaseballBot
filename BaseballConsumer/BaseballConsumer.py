@@ -296,7 +296,7 @@ class BaseballUpdaterBot:
         otherTeamKTrackerTuple = ("", 0, 0)
 
         response = None
-        directories = []
+        gamePks = []
 
         todaysGame = datetime.now() - timedelta(hours=5)
 
@@ -306,7 +306,7 @@ class BaseballUpdaterBot:
                 favTeamKTrackerTuple = ("", 0, 0)
                 otherTeamKTrackerTuple = ("", 0, 0)
                 response = None
-                directories = []
+                gamePks = []
                 globalLinescoreStatus = ("0", "0", False, False, False, "0", "0", "0", "0", "0", "0")
                 print("[{}] New Day".format(self.getTime()))
 
@@ -329,57 +329,47 @@ class BaseballUpdaterBot:
                                 print("[{}] Found day's URL: {}".format(self.getTime(), url))
                                 response = await resp.text()
 
-                                # Instead of parsing HTML, we're going to use json.load(response)
-                                # and replace the whole block below. Instead of a game directory,
-                                # we only need the gamePk.
-                                soup = bs4.BeautifulSoup(response, 'html.parser')
+                                # Place retrieved data into an object for parsing
+                                data = json.loads(response)
 
-                                # Get the gid directory based on team code (NYM is nyn)
-                                for listitem in soup.find_all('li'):
-                                    possibleGameId = listitem.get_text().strip()
-                                    if (self.TEAM_CODE+'mlb') in possibleGameId:
-                                        directories.append(url + "/" + possibleGameId)
-                                        print("[{}] Found game directory for team {}: {}".format(self.getTime(),
+                                # Load the gamePk and store it in gamePks array. Print that the game was found.
+                                games = data['dates'][0]['games']
+                                for game in games:
+                                    gamePks.append(game['gamePk'])
+                                    print("[{}] Found game directory for team {}: {}".format(self.getTime(),
                                                                                                  self.TEAM_CODE,
-                                                                                                 directories))
+                                                                                                 gamePks))
                 except:
                     print("[{}] Couldn't find URL \"{}\", trying again...".format(self.getTime(), url))
                     time.sleep(20)
 
             try:
-                for d in directories:
+                for gamePk in gamePks:
 
                     # Comment out this line to hard code a directory
-                    #d = "http://gd2.mlb.com/components/game/mlb/year_2017/month_04/day_26/gid_2017_04_26_oakmlb_anamlb_1/"
-                    print("[{}] Searching the URL directory for updates : {}".format(self.getTime(), d))
+                    #gamePk = "https://statsapi.mlb.com/api/v1/game/{}/linescore"
 
-                    linescore_url = "".join([d ,"linescore.json"])
-                    if not await linescoreParser.doesJSONExistYet(linescore_url):
-                        print("[{}] Game has not started".format(self.getTime()))
-                        continue
+                    linescore_url = "https://statsapi.mlb.com/api/v1/game/{}/linescore".format(gamePk)
                     linescoreJSON = await linescoreParser.getJSONFromURL(linescore_url)
                     linescore = linescoreParser.parseGameDataIntoMap(linescoreJSON)
 
-                    game_events_url = "".join([d ,"game_events.json"])
-                    if not await gameEventsParser.doesJSONExistYet(game_events_url):
-                        print("[{}] Game has not started".format(self.getTime()))
-                        continue
-                    gameEventsJSON = await gameEventsParser.getJSONFromURL(game_events_url)
+                    playByPlay_url = "https://statsapi.mlb.com/api/v1/game/{}/playByPlay".format(gamePk)
+                    gameEventsJSON = await gameEventsParser.getJSONFromURL(playByPlay_url)
                     if not gameEventsParser.gameHasStarted(gameEventsParser.getInnings(gameEventsJSON)):
                         print("[{}] Game has not started yet".format(self.getTime()))
                         continue
                     listOfGameEvents = gameEventsParser.getListOfGameEvents(gameEventsParser.getInnings(gameEventsJSON))
 
                     # Check if new game event
-                    for gameEvent in listOfGameEvents:
-                        id = (gameEvent['id'] if gameEvent['id'] is not None else "NoIdInJSONFile")
+                    for playByPlay in listOfGameEvents:
+                        id = (playByplay['id'] if playByPlay['id'] is not None else "NoIdInJSONFile")
                         if id not in idsOfPrevEvents:
                             if not self.linescoreAndGameEventsInSync(linescore, gameEvent):
                                 break
                             self.updateGlobalLinescoreStatus(linescore)
                             self.resetOutsGlobalLinescoreStatus()
                             self.printToLog(gameEvent, linescore)
-                            await client.send_message(channel, self.commentOnDiscord(gameEvent, linescore))
+                            await client.send_message(channel, self.commentOnDiscord(playByPlay, linescore))
                             idsOfPrevEvents = self.getEventIdsFromLog()
 
                     # Check if game status changed
