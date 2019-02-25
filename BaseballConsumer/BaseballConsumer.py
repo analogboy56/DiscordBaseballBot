@@ -17,7 +17,6 @@ import logging
 import aiohttp
 import discord
 import random
-import bs4
 
 GAME_THREAD_LOG = r'D:\Users\LaMaster\Downloads\DiscordBaseballBot-master\DiscordBaseballBot-master\BaseballConsumer\logs\game_thread.now'
 SETTINGS_FILE = '../settings.json'
