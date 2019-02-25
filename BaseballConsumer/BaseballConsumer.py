@@ -329,6 +329,9 @@ class BaseballUpdaterBot:
                                 print("[{}] Found day's URL: {}".format(self.getTime(), url))
                                 response = await resp.text()
 
+                                # Instead of parsing HTML, we're going to use json.load(response)
+                                # and replace the whole block below. Instead of a game directory,
+                                # we only need the gamePk.
                                 soup = bs4.BeautifulSoup(response, 'html.parser')
 
                                 # Get the gid directory based on team code (NYM is nyn)
