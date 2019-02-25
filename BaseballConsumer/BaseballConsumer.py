@@ -21,43 +21,6 @@ import random
 GAME_THREAD_LOG = r'D:\Users\LaMaster\Downloads\DiscordBaseballBot-master\DiscordBaseballBot-master\BaseballConsumer\logs\game_thread.now'
 SETTINGS_FILE = '../settings.json'
 
-# Emotes
-EMOTE_STRIKEOUT = "<:strikeout:434149393982029824>"
-EMOTE_STRIKEOUT_LOOKING = "<:strikeout2:434149415175979018>"
-EMOTE_RBI = "<:ribbies:453971650300477440>"
-EMOTE_HOMERUN = "<:ITSOUTTAHERE:453955727409807362>"
-EMOTE_GRAND_SLAM = "<:salami:453953837158367233>"
-EMOTE_OTHER_TEAM_RBI = ":("
-EMOTE_OTHER_TEAM_STRIKEOUT = "K"
-EMOTE_OTHER_TEAM_STRIKEOUT_LOOKING = "ꓘ"
-EMOTE_STOLEN_BASE = "<:stolen:432072292013572097>"
-
-# Game Status Constants
-WARMUP_TITLE = 'Game\'s about to start, everyone get in @here!'
-WARMUP_DESCRIPTION = "Welcome to Mariners Baseball!" # Sodo Mojo
-WARMUP_BODY_ALTERNATIVE = "https://www.youtube.com/watch?v=B6XbLXXMPYo" # Mariners Theme
-
-GAMESTARTED_TITLE = 'Play ball!'
-GAMESTARTED_DESCRIPTION = 'Nelly and monster dongs, name a better mashup.'
-GAMESTARTED_BODY = "Let's go Mariners!"
-
-RAINDELAY_TITLE = 'Rain Delay'
-RAINDELAY_DESCRIPTION = 'Rain delay stats?'
-RAINDELAY_BODY = 'Rain rain, go away.  Come on back another day.'
-
-POSTPONED_TITLE = 'Game Postponed'
-POSTPONED_DESCRIPTION = "Game's over, makeup to be played later"
-POSTPONED_BODY = ':('
-
-COMPLETEDEARLY_TITLE = 'Game Completed Early'
-COMPLETEDEARLY_DESCRIPTION = 'Magic 8 ball, will this game resume sometime tonight?'
-COMPLETEDEARLY_BODY = '8-ball: "No chance in hell!"'
-
-GAMEENDED_WIN_TITLE = 'I BLESS THE RAINS!'
-GAMEENDED_WIN_BODY = 'https://www.youtube.com/watch?v=FTQbiNvZqaY' ## (TCB) 'https://www.youtube.com/watch?v=mmwic9kFx2c'
-GAMEENDED_LOSS_TITLE = 'M\'s defeated'
-GAMEENDED_LOSS_BODY = 'We will get \'em next time' # suuuure
-
 class BaseballUpdaterBot:
 
     def __init__(self):
@@ -67,30 +30,30 @@ class BaseballUpdaterBot:
 
     def read_settings(self):
         with open(SETTINGS_FILE) as data:
-            settings = json.load(data)
+            self.settings = json.load(data)
 
-            self.DISCORD_CLIENT_ID = settings.get('DISCORD_CLIENT_ID')
+            self.DISCORD_CLIENT_ID = self.settings.get('DISCORD_CLIENT_ID')
             if self.DISCORD_CLIENT_ID == None: return "Missing DISCORD_CLIENT_ID"
 
-            self.DISCORD_CLIENT_SECRET = settings.get('DISCORD_CLIENT_SECRET')
+            self.DISCORD_CLIENT_SECRET = self.settings.get('DISCORD_CLIENT_SECRET')
             if self.DISCORD_CLIENT_SECRET == None: return "Missing DISCORD_CLIENT_SECRET"
 
-            self.DISCORD_TOKEN = settings.get('DISCORD_TOKEN')
+            self.DISCORD_TOKEN = self.settings.get('DISCORD_TOKEN')
             if self.DISCORD_TOKEN == None: return "Missing DISCORD_TOKEN"
 
-            self.DISCORD_GAME_THREAD_CHANNEL_ID = settings.get('DISCORD_GAME_THREAD_CHANNEL_ID')
+            self.DISCORD_GAME_THREAD_CHANNEL_ID = self.settings.get('DISCORD_GAME_THREAD_CHANNEL_ID')
             if self.DISCORD_GAME_THREAD_CHANNEL_ID == None: return "Missing DISCORD_GAME_THREAD_CHANNEL_ID"
 
-            self.BOT_TIME_ZONE = settings.get('BOT_TIME_ZONE')
+            self.BOT_TIME_ZONE = self.settings.get('BOT_TIME_ZONE')
             if self.BOT_TIME_ZONE == None: return "Missing BOT_TIME_ZONE"
 
-            self.TEAM_TIME_ZONE = settings.get('TEAM_TIME_ZONE')
+            self.TEAM_TIME_ZONE = self.settings.get('TEAM_TIME_ZONE')
             if self.TEAM_TIME_ZONE == None: return "Missing TEAM_TIME_ZONE"
 
-            self.TEAM_CODE = settings.get('TEAM_CODE')
+            self.TEAM_CODE = self.settings.get('TEAM_CODE')
             if self.TEAM_CODE == None: return "Missing TEAM_CODE"
 
-            self.TEAM_ABBREV = settings.get('TEAM_ABBREV')
+            self.TEAM_ABBREV = self.settings.get('TEAM_ABBREV')
             if self.TEAM_ABBREV == None: return "Missing TEAM_ABBREV"
 
         return 0
@@ -190,20 +153,20 @@ class BaseballUpdaterBot:
         event = gameEvent['event']
         if self.favoriteTeamIsBatting(gameEvent, linescore):
             # Favorite team batting
-            if "Home Run" in event and gameEvent['rbi'] != "4": playerism = ''.join([playerism, EMOTE_HOMERUN, "\n"])
-            if "Home Run" in event and gameEvent['rbi'] == "4": playerism = ''.join([playerism, EMOTE_GRAND_SLAM, "\n"])
+            if "Home Run" in event and gameEvent['rbi'] != "4": playerism = ''.join([playerism, self.settings.get('EMOTE_HOMERUN'), "\n"])
+            if "Home Run" in event and gameEvent['rbi'] == "4": playerism = ''.join([playerism, self.settings.get('EMOTE_GRAND_SLAM'), "\n"])
             if gameEvent['rbi'] is not None:
                 for i in range(int(gameEvent['rbi'])):
-                    playerism = ''.join([playerism, EMOTE_RBI, " "])
+                    playerism = ''.join([playerism, self.settings.get('EMOTE_RBI'), " "])
             if "Strikeout" in event:
                 global otherTeamKTrackerTuple
                 if "strikes out" in gameEvent['description']:
-                    otherTeamKTrackerTuple = ("".join([otherTeamKTrackerTuple[0], EMOTE_OTHER_TEAM_STRIKEOUT]), otherTeamKTrackerTuple[1] + 1, otherTeamKTrackerTuple[2])
+                    otherTeamKTrackerTuple = ("".join([otherTeamKTrackerTuple[0], self.settings.get('EMOTE_OTHER_TEAM_STRIKEOUT')]), otherTeamKTrackerTuple[1] + 1, otherTeamKTrackerTuple[2])
                 if "called out on strike" in gameEvent['description']:
-                    otherTeamKTrackerTuple = ("".join([otherTeamKTrackerTuple[0], EMOTE_OTHER_TEAM_STRIKEOUT_LOOKING]), otherTeamKTrackerTuple[1], otherTeamKTrackerTuple[2] + 1)
+                    otherTeamKTrackerTuple = ("".join([otherTeamKTrackerTuple[0], self.settings.get('EMOTE_OTHER_TEAM_STRIKEOUT_LOOKING')]), otherTeamKTrackerTuple[1], otherTeamKTrackerTuple[2] + 1)
 
                 if otherTeamKTrackerTuple[1] == 3 and otherTeamKTrackerTuple[2] == 0:
-                    playerism = "".join(["Strikeout tracker: 3 ", EMOTE_OTHER_TEAM_STRIKEOUT, "s"])
+                    playerism = "".join(["Strikeout tracker: 3 ", self.settings.get('EMOTE_OTHER_TEAM_STRIKEOUT'), "s"])
                 else:
                     playerism = "".join(["Strikeout tracker: ", otherTeamKTrackerTuple[0]])
         else:
@@ -211,19 +174,19 @@ class BaseballUpdaterBot:
             if "Strikeout" in event:
                 global favTeamKTrackerTuple
                 if "strikes out" in gameEvent['description']:
-                    favTeamKTrackerTuple = ("".join([favTeamKTrackerTuple[0], EMOTE_STRIKEOUT]), favTeamKTrackerTuple[1] + 1, favTeamKTrackerTuple[2])
+                    favTeamKTrackerTuple = ("".join([favTeamKTrackerTuple[0], self.settings.get('EMOTE_STRIKEOUT')]), favTeamKTrackerTuple[1] + 1, favTeamKTrackerTuple[2])
                 if "called out on strike" in gameEvent['description']:
-                    favTeamKTrackerTuple = ("".join([favTeamKTrackerTuple[0], EMOTE_STRIKEOUT_LOOKING]), favTeamKTrackerTuple[1], favTeamKTrackerTuple[2] + 1)
+                    favTeamKTrackerTuple = ("".join([favTeamKTrackerTuple[0], self.settings.get('EMOTE_STRIKEOUT_LOOKING')]), favTeamKTrackerTuple[1], favTeamKTrackerTuple[2] + 1)
 
                 if favTeamKTrackerTuple[1] == 3 and favTeamKTrackerTuple[2] == 0:
-                    playerism = "".join(["Strikeout tracker: 3 ", EMOTE_STRIKEOUT, "s"])
+                    playerism = "".join(["Strikeout tracker: 3 ", self.settings.get('EMOTE_STRIKEOUT'), "s"])
                 else:
                     playerism = "".join(["Strikeout tracker: ", favTeamKTrackerTuple[0]])
 
             # Opponents batting
             if gameEvent['rbi'] is not None:
                 for i in range(int(gameEvent['rbi'])):
-                    playerism = ''.join([playerism, EMOTE_OTHER_TEAM_RBI, " "])
+                    playerism = ''.join([playerism, self.settings.get('EMOTE_OTHER_TEAM_RBI'), " "])
 
         playerism = ''.join([playerism, "\n"])
         if self.hasPlayerQuip(gameEvent):
@@ -469,7 +432,7 @@ class BaseballUpdaterBot:
 
     def warmupStatus(self, linescore):
         if linescore['probableStartingPitchers'] is None:
-            pregamePost = WARMUP_BODY_ALTERNATIVE
+            pregamePost = self.settings.get('WARMUP_BODY_ALTERNATIVE')
         else:
             pregamePost = "{:<3}: {} {} ({}-{} {})\n" \
                           "{:<3}: {} {} ({}-{} {})".format(
@@ -479,25 +442,25 @@ class BaseballUpdaterBot:
                 linescore['home_team_name']['team_abbrev'], linescore['probableStartingPitchers']['home_pitcher']['throwinghand'],
                 linescore['probableStartingPitchers']['home_pitcher']['name'], linescore['probableStartingPitchers']['home_pitcher']['wins'],
                 linescore['probableStartingPitchers']['home_pitcher']['losses'], linescore['probableStartingPitchers']['home_pitcher']['era'])
-        return (discord.Embed(title=WARMUP_TITLE, description=WARMUP_DESCRIPTION),
+        return (discord.Embed(title=self.settings.get('WARMUP_TITLE'), description=self.settings.get('WARMUP_DESCRIPTION')),
                 pregamePost)
 
     def gameStartedStatus(self): # Start of game post
-        return (discord.Embed(title=GAMESTARTED_TITLE, description=GAMESTARTED_DESCRIPTION), GAMESTARTED_BODY)
+        return (discord.Embed(title=self.settings.get('GAMESTARTED_TITLE'), description=self.settings.get('GAMESTARTED_DESCRIPTION')), self.settings.get('GAMESTARTED_BODY'))
 
     def gameDelayedStatus(self):
-        em = (discord.Embed(title=RAINDELAY_TITLE, description=RAINDELAY_DESCRIPTION),
-              RAINDELAY_BODY)
+        em = (discord.Embed(title=self.settings.get('RAINDELAY_TITLE'), description=self.settings.get('RAINDELAY_DESCRIPTION')),
+              self.settings.get('RAINDELAY_BODY'))
         return em
 
     def gamePostponedStatus(self):
-        em = (discord.Embed(title=POSTPONED_TITLE, description=POSTPONED_DESCRIPTION),
-              POSTPONED_BODY)
+        em = (discord.Embed(title=self.settings.get('POSTPONED_TITLE'), description=self.settings.get('POSTPONED_DESCRIPTION')),
+              self.settings.get('POSTPONED_BODY'))
         return em
 
     def gameCompletedEarlyStatus(self):
-        em = (discord.Embed(title=COMPLETEDEARLY_TITLE, description=COMPLETEDEARLY_DESCRIPTION),
-              COMPLETEDEARLY_BODY)
+        em = (discord.Embed(title=self.settings.get('COMPLETEDEARLY_TITLE'), description=self.settings.get('COMPLETEDEARLY_DESCRIPTION')),
+              self.settings.get('COMPLETEDEARLY_BODY'))
         return em
 
     def gameEndedStatus(self, linescore):
@@ -505,23 +468,23 @@ class BaseballUpdaterBot:
         otherTeamWLRecord = self.getOtherTeamWLRecord(linescore)
         if self.isFavoriteTeamWinning(linescore):
             # TCB url 'https://www.youtube.com/watch?v=mmwic9kFx2c'
-            title = GAMEENDED_WIN_TITLE
+            title = self.settings.get('GAMEENDED_WIN_TITLE')
             description = '{} ({}-{}) beat the {} ({}-{}) by a score of {}-{}!'.format(
                 favoriteTeamWLRecord[0], favoriteTeamWLRecord[1], favoriteTeamWLRecord[2],
                 otherTeamWLRecord[0], otherTeamWLRecord[1], otherTeamWLRecord[2],
                 linescore['away_team_stats']['team_runs'], linescore['home_team_stats']['team_runs']
             )
             em = (discord.Embed(title=title, description=description),
-                  GAMEENDED_WIN_BODY)
+                  self.settings.get('GAMEENDED_WIN_BODY'))
         else:
-            title = GAMEENDED_LOSS_TITLE
+            title = self.settings.get('GAMEENDED_LOSS_TITLE')
             description = '{} ({}-{}) were defeated by the {} ({}-{}) by a score of {}-{}'.format(
                 favoriteTeamWLRecord[0], favoriteTeamWLRecord[1], favoriteTeamWLRecord[2],
                 otherTeamWLRecord[0], otherTeamWLRecord[1], otherTeamWLRecord[2],
                 linescore['away_team_stats']['team_runs'], linescore['home_team_stats']['team_runs']
             )
             em = (discord.Embed(title=title, description=description),
-                  GAMEENDED_LOSS_BODY)
+                  self.settings.get('GAMEENDED_LOSS_BODY'))
         return em
 
     def isFavoriteTeamWinning(self, linescore):

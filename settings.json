@@ -7,6 +7,41 @@
     "TEAM_TIME_ZONE": "ET",
     "TEAM_CODE": "nyn",
     "TEAM_ABBREV": "NYM",
+    "TEAM_ID": 136,
+    "GAME_THREAD_NOW": "./logs/game_thread.now",
 
-    "GAME_THREAD_NOW": "./logs/game_thread.now"
+    "EMOTE_STRIKEOUT": "<:strikeout:434149393982029824>",
+    "EMOTE_STRIKEOUT_LOOKING": "<:strikeout2:434149415175979018>",
+    "EMOTE_RBI": "<:ribbies:453971650300477440>",
+    "EMOTE_HOMERUN": "<:ITSOUTTAHERE:453955727409807362>",
+    "EMOTE_GRAND_SLAM": "<:salami:453953837158367233>",
+    "EMOTE_OTHER_TEAM_RBI": ":(",
+    "EMOTE_OTHER_TEAM_STRIKEOUT": "K",
+    "EMOTE_OTHER_TEAM_STRIKEOUT_LOOKING": "ꓘ",
+    "EMOTE_STOLEN_BASE": "<:stolen:432072292013572097>",
+
+    "WARMUP_TITLE": "Game's about to start, everyone get in @here!",
+    "WARMUP_DESCRIPTION": "Welcome to Mariners Baseball!",
+    "WARMUP_BODY_ALTERNATIVE": "https://www.youtube.com/watch?v=B6XbLXXMPYo",
+
+    "GAMESTARTED_TITLE": "Play ball!",
+    "GAMESTARTED_DESCRIPTION": "Nelly and monster dongs, name a better mashup.",
+    "GAMESTARTED_BODY": "Let's go Mariners!",
+
+    "RAINDELAY_TITLE": "Rain Delay",
+    "RAINDELAY_DESCRIPTION": "Rain delay stats?",
+    "RAINDELAY_BODY": "Rain rain, go away.  Come on back another day.",
+
+    "POSTPONED_TITLE": "Game Postponed",
+    "POSTPONED_DESCRIPTION": "Game's over, makeup to be played later",
+    "POSTPONED_BODY": ":(",
+
+    "COMPLETEDEARLY_TITLE": "Game Completed Early",
+    "COMPLETEDEARLY_DESCRIPTION": "Magic 8 ball, will this game resume sometime tonight?",
+    "COMPLETEDEARLY_BODY": "8-ball: \"No chance in hell!\"",
+
+    "GAMEENDED_WIN_TITLE": "I BLESS THE RAINS!",
+    "GAMEENDED_WIN_BODY": "https://www.youtube.com/watch?v=FTQbiNvZqaY",
+    "GAMEENDED_LOSS_TITLE": "M's defeated",
+    "GAMEENDED_LOSS_BODY": "We will get 'em next time"
 }
