@@ -351,13 +351,16 @@ class BaseballUpdaterBot:
 
                     linescore_url = "https://statsapi.mlb.com/api/v1/game/{}/linescore".format(gamePk)
                     linescoreJSON = await linescoreParser.getJSONFromURL(linescore_url)
+                    
+                    if len(linescoreJSON['innings']) == 0:
+                        print("[{}] Game has not started yet".format(self.getTime()))
+                        continue
+                        
                     linescore = linescoreParser.parseGameDataIntoMap(linescoreJSON)
 
                     playByPlay_url = "https://statsapi.mlb.com/api/v1/game/{}/playByPlay".format(gamePk)
                     gameEventsJSON = await gameEventsParser.getJSONFromURL(playByPlay_url)
-                    if not gameEventsParser.gameHasStarted(gameEventsParser.getInnings(gameEventsJSON)):
-                        print("[{}] Game has not started yet".format(self.getTime()))
-                        continue
+                    
                     listOfGameEvents = gameEventsParser.getListOfGameEvents(gameEventsParser.getInnings(gameEventsJSON))
 
                     # Check if new game event
