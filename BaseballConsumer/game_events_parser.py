@@ -34,18 +34,6 @@ class GameEventsParser:
         fo = self.openfile(filename)
         return json.load(fo)
 
-    async def doesJSONExistYet(self,url):
-        try:
-            async with aiohttp.ClientSession() as session:
-                async with session.get(url) as resp:
-                    if resp.status == 200:
-                        return True
-            return False
-        except:
-            e = sys.exc_info()[0]
-            print("Exception occurred: {}".format(e))
-            return False
-
     async def getJSONFromURL(self,url):
         async with aiohttp.ClientSession() as session:
             async with session.get(url) as resp:
