@@ -9,8 +9,7 @@ Please contact us on Reddit or Github if you have any questions.
 '''
 
 from datetime import datetime, timedelta
-from game_events_parser import GameEventsParser
-from linescore_parser import LinescoreParser
+from game import Game
 import time
 import json
 import logging
@@ -258,7 +257,7 @@ class BaseballUpdaterBot:
         otherTeamKTrackerTuple = ("", 0, 0)
 
         response = None
-        gamePks = []
+        games = []
 
         todaysGame = datetime.now() - timedelta(hours=5)
 
@@ -297,29 +296,22 @@ class BaseballUpdaterBot:
                                 # Load the gamePk and store it in gamePks array. Print that the game was found.
                                 games = data['dates'][0]['games']
                                 for game in games:
-                                    gamePks.append(game['gamePk'])
-                                    print("[{}] Found game directory for team {}: {}".format(self.getTime(),
+                                    gamePks.append(game['game'])
+                                    print("[{}] Found game PK for team {}: {}".format(self.getTime(),
                                                                                                  self.TEAM_CODE,
-                                                                                                 gamePks))
+                                                                                                 game['gamePk']))
                 except:
                     print("[{}] Couldn't find URL \"{}\", trying again...".format(self.getTime(), url))
                     time.sleep(20)
 
             try:
-                for gamePk in gamePks:
-
-                    # Comment out this line to hard code a directory
-                    #gamePk = "https://statsapi.mlb.com/api/v1/game/{}/linescore"
-
-                    linescore_url = "https://statsapi.mlb.com/api/v1/game/{}/linescore".format(gamePk)
-                    linescoreJSON = await linescoreParser.getJSONFromURL(linescore_url)
+                for game in games:
                     
-                    if len(linescoreJSON['innings']) == 0:
+                    if not game.hasStarted():
                         print("[{}] Game has not started yet".format(self.getTime()))
                         continue
                         
-                    linescore = linescoreParser.parseGameDataIntoMap(linescoreJSON)
-
+                    
                     playByPlay_url = "https://statsapi.mlb.com/api/v1/game/{}/playByPlay".format(gamePk)
                     gameEventsJSON = await gameEventsParser.getJSONFromURL(playByPlay_url)
                     
