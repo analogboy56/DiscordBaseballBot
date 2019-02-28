@@ -9,10 +9,10 @@ import time
 import asyncio
 from discord.ext.commands import Bot
 
-TOKEN = 'TOKEN'
-CLIENT_ID = 'CLIENT_ID'
-CLIENT_SECRET = 'CLIENT_SECRET'
-GAME_THREAD_CHANNEL_ID = 'GAME_THREAD_CHANNEL_ID'
+TOKEN = "NDM0MDkxNTI4Mjg2MjQwNzY4.DbFb_w.Jj6Cjm6mgDVIcaz-p6cvt3MuA64"
+CLIENT_ID = "434091528286240768"
+CLIENT_SECRET = "tnYjVQSOKGSQS8M4WMNJrQ9HJ-ewU61m"
+GAME_THREAD_CHANNEL_ID = "434122846646829057"
 
 import discord
 import asyncio
@@ -24,9 +24,10 @@ async def my_background_task():
     counter = 0
     channel = discord.Object(id=GAME_THREAD_CHANNEL_ID)
     while not client.is_closed:
+        cv = "fuck u <@225731078369837056>"
         counter += 1
-        await client.send_message(channel, counter)
-        await asyncio.sleep(60) # task runs every 60 seconds
+        await client.send_message(channel, cv)
+        await asyncio.sleep(300) # task runs every 5 minutes
 
 @client.event
 async def on_ready():

@@ -16,7 +16,7 @@ class Game:
         return self.data['teams'][flag]['team']['abbreviation']
 
     def hasStarted(self):
-        return false
+        return False
 
     async def update(self):
         linescore_url = "https://statsapi.mlb.com/api/v1/game/{}/linescore".format(gamePk)

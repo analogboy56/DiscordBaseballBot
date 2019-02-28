@@ -241,8 +241,8 @@ class BaseballUpdaterBot:
             return
 
         # timechecker = timecheck.TimeCheck(time_before)
-        gameEventsParser = GameEventsParser()
-        linescoreParser = LinescoreParser()
+        #gameEventsParser = GameEventsParser()
+        #linescoreParser = LinescoreParser()
 
         # This list will be what is compared against to see if anything new popped up in the game_events feed
         idsOfPrevEvents = self.getEventIdsFromLog()
@@ -260,7 +260,7 @@ class BaseballUpdaterBot:
         games = []
 
         todaysGame = datetime.now() - timedelta(hours=5)
-
+        
         while True:
             if todaysGame.day is not (datetime.now()-timedelta(hours=5)).day:
                 todaysGame = datetime.now() - timedelta(hours=5)
@@ -271,8 +271,7 @@ class BaseballUpdaterBot:
                 globalLinescoreStatus = ("0", "0", False, False, False, "0", "0", "0", "0", "0", "0")
                 print("[{}] New Day".format(self.getTime()))
 
-            # You'll now want to load https://statsapi.mlb.com/api/v1/schedule/?sportId=1&teamId=136&date=02/24/2019
-            # Changes made to load new API
+            # Loading new API
             url = "https://statsapi.mlb.com/api/v1/schedule/?sportId=1&teamId=136&date="
             url = url + todaysGame.strftime("%m/%d/%Y")
 
@@ -295,13 +294,16 @@ class BaseballUpdaterBot:
 
                                 # Load the gamePk and store it in games array. Print that the game was found.
                                 for game in data['dates'][0]['games']:
-                                    games.append(game['game'])
+                                    obj = Game(game)
+                                    games.append(obj)
+                                    print(obj)
                                     print("[{}] Found game PK for team {}: {}".format(self.getTime(),
                                                                                                  self.TEAM_CODE,
-                                                                                                 game['games']))
+                                                                                                 game['gamePk']))
                 except:
                     print("[{}] Couldn't find URL \"{}\", trying again...".format(self.getTime(), url))
                     time.sleep(20)
+            
 
             try:
                 for game in games:
@@ -311,11 +313,6 @@ class BaseballUpdaterBot:
                         continue
                         
                     
-                    playByPlay_url = "https://statsapi.mlb.com/api/v1/game/{}/playByPlay".format(gamePk)
-                    gameEventsJSON = await gameEventsParser.getJSONFromURL(playByPlay_url)
-                    
-                    listOfGameEvents = gameEventsParser.getListOfGameEvents(gameEventsParser.getInnings(gameEventsJSON))
-
                     # Check if new game event
                     for playByPlay in listOfGameEvents:
                         id = (playByplay['id'] if playByPlay['id'] is not None else "NoIdInJSONFile")
@@ -339,7 +336,7 @@ class BaseballUpdaterBot:
             except Exception as ex:
                 logging.exception("Exception occured")
                 #await client.send_message(channel, "Bot encountered an error.  Was there a review on the field?")
-
+            
             time.sleep(10)
 
         print("/*------------- End of Bot.run() -------------*/")
@@ -505,3 +502,4 @@ class BaseballUpdaterBot:
 if __name__ == '__main__':
     baseballUpdaterBot = BaseballUpdaterBot()
     baseballUpdaterBot.run()
+
