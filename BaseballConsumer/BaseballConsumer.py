@@ -267,7 +267,7 @@ class BaseballUpdaterBot:
                 favTeamKTrackerTuple = ("", 0, 0)
                 otherTeamKTrackerTuple = ("", 0, 0)
                 response = None
-                gamePks = []
+                games = []
                 globalLinescoreStatus = ("0", "0", False, False, False, "0", "0", "0", "0", "0", "0")
                 print("[{}] New Day".format(self.getTime()))
 
@@ -293,13 +293,12 @@ class BaseballUpdaterBot:
                                 # Place retrieved data into an object for parsing
                                 data = json.loads(response)
 
-                                # Load the gamePk and store it in gamePks array. Print that the game was found.
-                                games = data['dates'][0]['games']
-                                for game in games:
-                                    gamePks.append(game['game'])
+                                # Load the gamePk and store it in games array. Print that the game was found.
+                                for game in data['dates'][0]['games']:
+                                    games.append(game['game'])
                                     print("[{}] Found game PK for team {}: {}".format(self.getTime(),
                                                                                                  self.TEAM_CODE,
-                                                                                                 game['gamePk']))
+                                                                                                 game['games']))
                 except:
                     print("[{}] Couldn't find URL \"{}\", trying again...".format(self.getTime(), url))
                     time.sleep(20)

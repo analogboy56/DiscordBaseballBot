@@ -4,6 +4,7 @@
 from game_events_parser import GameEventsParser
 from linescore_parser import LinescoreParser
 import asyncio
+import objectpath
 
 class Game:
     def __init__(self, data):
@@ -12,8 +13,7 @@ class Game:
         self.linescoreParser = LinescoreParser()
 
     def getAbbreviation(self, flag):
-        #need to retrieve team abbrev here
-        return
+        return self.data['teams'][flag]['team']['abbreviation']
 
     def hasStarted(self):
         return false
