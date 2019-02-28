@@ -27,7 +27,7 @@ class LiveFeed:
     # Perform an update based on the timestamp of the last reload/update
     async def update(self):
         timestamp = self.data['metaData']['timeStamp']
-        url = self.PATCH_DIFF_URL.format(self.gamePk, timecode)
+        url = self.PATCH_DIFF_URL.format(self.gamePk, timestamp)
 
         try:
             async with aiohttp.ClientSession() as session:
