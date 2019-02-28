@@ -1,10 +1,11 @@
 # General game info
 # Team names, cities, records, etc.
 
-from game_events_parser import GameEventsParser
-from linescore_parser import LinescoreParser
 import asyncio
 import objectpath
+
+from game_events_parser import GameEventsParser
+from linescore_parser import LinescoreParser
 
 class Game:
     def __init__(self, data):
@@ -19,7 +20,5 @@ class Game:
         return False
 
     async def update(self):
-        linescore_url = "https://statsapi.mlb.com/api/v1/game/{}/linescore".format(gamePk)
-        self.linescore = await self.linescoreParser.getJSONFromURL(linescore_url)
-
-    
+        live_feed_url = "https://statsapi.mlb.com/api/v1.1/game/{}/feed/live".format(self.data['gamePk'])
+        self.live_feed = await self.linescoreParser.getJSONFromURL(live_feed_url)
