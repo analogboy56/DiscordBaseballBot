@@ -8,26 +8,40 @@ import discord
 import time
 import asyncio
 from discord.ext.commands import Bot
+from random import randint
+from datetime import datetime
 
 TOKEN = "NDM0MDkxNTI4Mjg2MjQwNzY4.DbFb_w.Jj6Cjm6mgDVIcaz-p6cvt3MuA64"
 CLIENT_ID = "434091528286240768"
 CLIENT_SECRET = "tnYjVQSOKGSQS8M4WMNJrQ9HJ-ewU61m"
 GAME_THREAD_CHANNEL_ID = "434122846646829057"
+POLITICS_CHANNEL_ID = "434075961361694720"
 
 import discord
 import asyncio
 
 client = discord.Client()
 
+def getTime():
+    today = datetime.today().strftime("%Y/%m/%d %H:%M:%S")
+    return today
+    
 async def my_background_task():
     await client.wait_until_ready()
     counter = 0
     channel = discord.Object(id=GAME_THREAD_CHANNEL_ID)
+    other_channel = discord.Object(id=POLITICS_CHANNEL_ID)
     while not client.is_closed:
         cv = "fuck u <@225731078369837056>"
-        counter += 1
-        await client.send_message(channel, cv)
-        await asyncio.sleep(300) # task runs every 5 minutes
+        #measure = "GO BERNIE!!!!!! <@424300998425575434>"
+        num=(randint(900,21600))
+        print("[{}] Next callout in {} minutes".format(getTime(), num/60))
+        if num > 17000:
+            cv1 = "<@225731078369837056> might actually be alright."
+            await client.send_message(channel, cv1)
+        else:
+            await client.send_message(channel, cv)
+        await asyncio.sleep(num) # task randomizes between 15 min - 6 hours
 
 @client.event
 async def on_ready():
