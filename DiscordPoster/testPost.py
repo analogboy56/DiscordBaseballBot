@@ -11,11 +11,11 @@ from discord.ext.commands import Bot
 from random import randint
 from datetime import datetime
 
-TOKEN = "NDM0MDkxNTI4Mjg2MjQwNzY4.DbFb_w.Jj6Cjm6mgDVIcaz-p6cvt3MuA64"
-CLIENT_ID = "434091528286240768"
-CLIENT_SECRET = "tnYjVQSOKGSQS8M4WMNJrQ9HJ-ewU61m"
-GAME_THREAD_CHANNEL_ID = "434122846646829057"
-POLITICS_CHANNEL_ID = "434075961361694720"
+TOKEN = 
+CLIENT_ID = 
+CLIENT_SECRET = 
+GAME_THREAD_CHANNEL_ID = 
+POLITICS_CHANNEL_ID = 
 
 import discord
 import asyncio
